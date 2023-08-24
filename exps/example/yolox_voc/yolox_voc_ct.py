@@ -50,12 +50,12 @@ class Exp(MyExp):
     def get_dataset(self, cache: bool, cache_type: str = "ram"):
         from yolox.data.datasets.ct_voc import CTAnnotationTransform,CTVOCDetection
 
-        return CTVOCDetection("/media/Datacenter_storage/ramon_dataset_curations/kidney_radiomics_yolo/datasets/stu_bbox_dataset.csv",image_set='train')
+        return CTVOCDetection("/media/Datacenter_storage/ramon_dataset_curations/kidney_radiomics_yolo/datasets/filtered_stu.csv",image_set='train')
 
     def get_eval_dataset(self, **kwargs):
         from yolox.data.datasets.ct_voc import CTAnnotationTransform,CTVOCDetection
 
-        return CTVOCDetection("/media/Datacenter_storage/ramon_dataset_curations/kidney_radiomics_yolo/datasets/stu_bbox_dataset.csv",image_set='test')
+        return CTVOCDetection("/media/Datacenter_storage/ramon_dataset_curations/kidney_radiomics_yolo/datasets/filtered_stu.csv",image_set='test')
 
     def get_evaluator(self, batch_size, is_distributed, testdev=False, legacy=False):
         from yolox.evaluators import VOCEvaluator

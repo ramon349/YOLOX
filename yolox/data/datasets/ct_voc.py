@@ -43,7 +43,7 @@ class CTAnnotationTransform(object):
         res = np.empty((0,5)) 
         KIDNEY_LABEL=0 # hardcoded value as we only have 1 label 
         #x is columsn  y is rows 
-        bbox =  [ target[f'bbox-{e}'] for e in [1,0,3,2]] #should be in xmin,ymin,xmax,ymax 
+        bbox =  [ target[f'bbox-{e}'] for e in [1,2,4,5]] #should be in xmin,ymin,xmax,ymax 
         bbox.append(KIDNEY_LABEL) 
         img_height = abs(target['height'])
         img_width = abs(target['width']) 
@@ -125,14 +125,12 @@ class CTVOCDetection(VOCDetection):
         return resized_img
 
     def load_image(self, index):
+        from PIL import Image 
+        import numpy as np 
         index = int(index) # for some reason i get tensors as indexes 
-        img_path = self.data.iloc[index]['image'] 
-        arr_slice = self.data.iloc[index]['slice']
-        img = nib.load(img_path).get_fdata()[:,:,arr_slice] 
-        img[img<=self.vmin] = self.vmin 
-        img[img>=self.vmax] = self.vmax 
-        img = (((img-img.min())/img.max())*255 ).astype(np.uint8) #make sure images are 8bit  
-        img = np.stack((img,)*3,axis=-1)
+        img_path = self.data.iloc[index]['png_path']  
+        with Image.open(img_path,'r') as f: 
+            img = np.array(f)
 
         return img 
     @cache_read_img(use_cache=True)
